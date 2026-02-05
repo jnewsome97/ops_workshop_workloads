@@ -1,0 +1,18 @@
+---
+# Ansible collection dependencies for testing
+# Install with: ansible-galaxy collection install -r tests/requirements.yml
+
+collections:
+  # Core OpenShift Workloads
+  - name: https://github.com/agnosticd/core_workloads.git
+    type: git
+    version: main
+
+  # Showroom
+  - name: https://github.com/agnosticd/showroom.git
+    type: git
+    version: v1.3.9
+
+  # Kubernetes core (for k8s_info, k8s modules)
+  - name: kubernetes.core
+    version: ">=2.4.0"

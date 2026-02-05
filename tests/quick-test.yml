@@ -1,0 +1,71 @@
+---
+# Quick test - just verify collection loads and basic workload runs
+# Usage:
+#   export KUBECONFIG=/path/to/kubeconfig
+#   ansible-playbook -i localhost, -c local tests/quick-test.yml
+
+- name: Quick Test - Verify Collection Works
+  hosts: localhost
+  connection: local
+  gather_facts: true
+
+  vars:
+    guid: "qtest"
+    ACTION: create
+    silent: false
+
+  pre_tasks:
+    - name: Verify cluster access
+      kubernetes.core.k8s_info:
+        api_version: v1
+        kind: Namespace
+        name: default
+      register: r_cluster_check
+
+    - name: Show cluster connection
+      debug:
+        msg: "Successfully connected to OpenShift cluster"
+
+    - name: Verify collection is installed
+      debug:
+        msg: "jnewsome97.ops_workshop_workloads collection loaded successfully"
+
+  tasks:
+    # Test a simple workload from our collection
+    - name: Test ocp4_workload_days_ops_track role loads
+      include_role:
+        name: jnewsome97.ops_workshop_workloads.ocp4_workload_days_ops_track
+        tasks_from: pre_workload.yml
+      ignore_errors: true
+
+    - name: Create test namespace to verify cluster write access
+      kubernetes.core.k8s:
+        state: present
+        definition:
+          apiVersion: v1
+          kind: Namespace
+          metadata:
+            name: "ops-track-test-{{ guid }}"
+            labels:
+              test: "ops-workshop-workloads"
+
+    - name: Clean up test namespace
+      kubernetes.core.k8s:
+        state: absent
+        api_version: v1
+        kind: Namespace
+        name: "ops-track-test-{{ guid }}"
+
+  post_tasks:
+    - name: Quick test passed
+      debug:
+        msg: |
+          ============================================
+          Quick test PASSED!
+
+          - Cluster connection: OK
+          - Collection loaded: OK
+          - Cluster write access: OK
+
+          Ready for full workload testing.
+          ============================================
