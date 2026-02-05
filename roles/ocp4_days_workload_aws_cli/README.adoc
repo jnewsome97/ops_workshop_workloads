@@ -1,0 +1,85 @@
+= ocp4_days_workload_aws_cli - AWS CLI Installation and Configuration
+
+== Role Description
+
+This workload installs the AWS CLI and configures credentials for workshop users.
+
+== Supported Modes
+
+=== Bastion Mode (default)
+For workshops using wetty terminal (SSH to bastion host).
+Installs AWS CLI on the bastion and configures credentials in the student's home directory.
+
+Set: `ocp4_days_workload_aws_cli_bastion_mode: true`
+
+=== Pod Mode
+For workshops using showroom terminal (container-based).
+Execs into the showroom pod to install AWS CLI and configure credentials.
+
+Set: `ocp4_days_workload_aws_cli_pod_mode: true`
+
+=== Custom Image Mode
+For the cleanest solution, use a custom terminal image with AWS CLI pre-installed.
+The ROSA terminal image already includes AWS CLI: `quay.io/rhpds/openshift-showroom-terminal-rosa:latest`
+
+== Role Variables
+
+[cols="1,1,3"]
+|===
+|Variable |Default |Description
+
+|sandbox_aws_access_key_id
+|""
+|AWS Access Key ID (from sandbox)
+
+|sandbox_aws_secret_access_key
+|""
+|AWS Secret Access Key (from sandbox)
+
+|ocp4_days_workload_aws_cli_region
+|us-east-2
+|AWS region to configure
+
+|student_name
+|lab-user
+|Username for credential configuration
+
+|ocp4_days_workload_aws_cli_bastion_mode
+|true
+|Install on bastion host
+
+|ocp4_days_workload_aws_cli_pod_mode
+|false
+|Install in showroom pod via exec
+|===
+
+== Usage in AgnosticV
+
+Add to your catalog item:
+
+[source,yaml]
+----
+ocp_workloads:
+  - ocp4_days_workload_aws_cli
+
+# AWS credentials from sandbox (set automatically by sandbox provisioner)
+# sandbox_aws_access_key_id and sandbox_aws_secret_access_key are set by infra-aws-get-sandbox role
+
+ocp4_days_workload_aws_cli_region: us-east-2
+ocp4_days_workload_aws_cli_pod_mode: true
+ocp4_days_workload_aws_cli_bastion_mode: false
+----
+
+== Using ROSA Terminal Image (Recommended)
+
+The ROSA terminal image has AWS CLI pre-installed. Just configure credentials:
+
+[source,yaml]
+----
+# Use ROSA terminal image - has AWS CLI pre-installed
+ocp4_workload_showroom_terminal_image: quay.io/rhpds/openshift-showroom-terminal-rosa:latest
+
+# This workload will configure credentials in the pod
+ocp4_days_workload_aws_cli_pod_mode: true
+ocp4_days_workload_aws_cli_bastion_mode: false
+----

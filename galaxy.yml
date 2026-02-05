@@ -1,0 +1,21 @@
+---
+namespace: jnewsome97
+name: ops_workshop_workloads
+version: 1.0.0
+readme: README.md
+authors:
+- Josh Newsome
+description: Collection of Ansible workloads for OpenShift Days - Ops Track Workshop.
+license:
+- GPL-2.0-or-later
+license_file: ''
+tags:
+- openshift
+- workshop
+- operations
+dependencies: {}
+repository: https://github.com/jnewsome97/ops_workshop_workloads
+documentation: https://github.com/jnewsome97/ops_workshop_workloads
+homepage: https://github.com/jnewsome97/ops_workshop_workloads
+issues: https://github.com/jnewsome97/ops_workshop_workloads/issues
+build_ignore: []

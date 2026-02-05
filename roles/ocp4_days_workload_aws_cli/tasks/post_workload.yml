@@ -1,0 +1,4 @@
+---
+- name: Post-workload tasks
+  debug:
+    msg: "Post-workload tasks complete for AWS CLI configuration"

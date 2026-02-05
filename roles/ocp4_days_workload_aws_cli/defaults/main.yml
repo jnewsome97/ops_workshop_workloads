@@ -1,0 +1,26 @@
+---
+become_override: false
+ocp_username: system:admin
+silent: false
+
+# AWS region for configuration
+ocp4_days_workload_aws_cli_region: us-east-2
+
+# Showroom namespace pattern
+ocp4_days_workload_aws_cli_showroom_namespace: "showroom-{{ guid | default('00000') }}"
+
+# AWS credentials (typically passed from sandbox)
+sandbox_aws_access_key_id: ""
+sandbox_aws_secret_access_key: ""
+
+# Users to configure AWS credentials for (bastion mode)
+ocp4_days_workload_aws_cli_users:
+  - lab-user
+  - "{{ student_name | default('demo-user') }}"
+
+# Installation modes
+ocp4_days_workload_aws_cli_bastion_mode: true
+ocp4_days_workload_aws_cli_pod_mode: false
+
+# Whether to require credentials (fail if not provided)
+ocp4_days_workload_aws_cli_require_credentials: false

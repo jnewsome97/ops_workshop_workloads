@@ -1,0 +1,12 @@
+---
+- name: Pre-workload tasks
+  debug:
+    msg: "Pre-workload tasks for AWS CLI configuration"
+
+- name: Validate AWS credentials are provided
+  assert:
+    that:
+      - sandbox_aws_access_key_id | default('') | length > 0
+      - sandbox_aws_secret_access_key | default('') | length > 0
+    fail_msg: "AWS credentials not provided. Set sandbox_aws_access_key_id and sandbox_aws_secret_access_key."
+  when: ocp4_days_workload_aws_cli_require_credentials | default(false) | bool

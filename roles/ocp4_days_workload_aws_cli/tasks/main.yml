@@ -1,0 +1,18 @@
+---
+- name: Running Pre Workload Tasks
+  include_tasks:
+    file: ./pre_workload.yml
+    apply:
+      become: "{{ become_override | default(omit) }}"
+
+- name: Running Workload Tasks
+  include_tasks:
+    file: ./workload.yml
+    apply:
+      become: "{{ become_override | default(omit) }}"
+
+- name: Running Post Workload Tasks
+  include_tasks:
+    file: ./post_workload.yml
+    apply:
+      become: "{{ become_override | default(omit) }}"

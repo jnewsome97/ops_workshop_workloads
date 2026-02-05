@@ -1,0 +1,4 @@
+---
+- name: Remove AWS CLI workload
+  debug:
+    msg: "Remove workload tasks - nothing to clean up for AWS CLI"
